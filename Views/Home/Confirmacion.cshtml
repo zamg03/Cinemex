@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "¡Compra Exitosa!";
+}
+
+<style>
+    .bg-light-gray { background-color: #f8f9fa; }
+    .ticket-container { background: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; position: relative; }
+    .ticket-header { background-color: #E50914; color: white; padding: 30px 20px; text-align: center; }
+    .ticket-body { padding: 30px; }
+    .barcode-area { background-color: #f1f1f1; padding: 20px; text-align: center; border-top: 2px dashed #ccc; }
+    .barcode-icon { font-size: 4rem; color: #333; line-height: 1; }
+</style>
+
+<div class="bg-light-gray py-5 text-dark" style="min-height: 80vh;">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+            <h2 class="fw-bold mt-3" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">¡PAGO EXITOSO!</h2>
+            <p class="text-muted">Tu reservación ha sido confirmada. Disfruta la función.</p>
+        </div>
+
+        <div class="ticket-container border">
+            <div class="ticket-header">
+                <h4 class="fw-bold mb-0 text-uppercase" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">Cinemex @ViewBag.Cine</h4>
+            </div>
+            
+            <div class="ticket-body">
+                <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Michael: La Historia de Michael Jackson</h5>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <p class="small text-muted mb-0">Horario</p>
+                        <p class="fw-bold mb-0 text-primary fs-5">@ViewBag.Horario hrs</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="small text-muted mb-0">Asientos</p>
+                        <p class="fw-bold mb-0 text-primary">@ViewBag.Asientos</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <p class="small text-muted mb-0">Boletos</p>
+                        <p class="fw-bold fs-5 text-danger mb-0">@ViewBag.Cantidad</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="small text-muted mb-0">Total Pagado</p>
+                        <p class="fw-bold fs-5 text-success mb-0">@ViewBag.Total</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="barcode-area">
+                <p class="small text-muted mb-2">Escanea este código en la entrada</p>
+                <i class="bi bi-upc barcode-icon"></i>
+                <p class="mb-0 fw-bold" style="letter-spacing: 4px;">CMX-@DateTime.Now.ToString("HHmmss")</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark rounded-0 px-4 py-2">Volver al Inicio</a>
+        </div>
+    </div>
+</div>

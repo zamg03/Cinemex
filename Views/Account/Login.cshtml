@@ -1,0 +1,172 @@
+﻿@{
+    ViewData["Title"] = "Iniciar Sesión";
+    Layout = null; 
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Evidencia 1</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .bg-cinemex { background-color: #E50914; }
+        .cinemex-input {
+            border: none;
+            border-bottom: 1px solid #777;
+            border-radius: 0;
+            padding-left: 0;
+        }
+        .cinemex-input:focus {
+            box-shadow: none;
+            border-bottom: 2px solid #000;
+            background-color: transparent;
+        }
+        .btn-ingresar {
+            background-color: #f1f1f1;
+            color: #333;
+            font-weight: 500;
+            border: none;
+        }
+        .btn-ingresar:hover {
+            background-color: #e2e2e2;
+        }
+        .text-cinemex { color: #E50914; cursor: pointer; text-decoration: none; }
+        .text-cinemex:hover { color: #b30710; text-decoration: underline; }
+        .back-arrow { cursor: pointer; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+
+    @if (ViewBag.ModalError != null)
+    {
+        <div id="errorModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.75); z-index: 10000; display: flex; justify-content: center; align-items: center;">
+            <div style="background-color: white; width: 90%; max-width: 450px; padding: 40px 20px; text-align: center; box-shadow: 0px 4px 15px rgba(0,0,0,0.5);">
+                <h5 style="margin-bottom: 30px; font-weight: normal; color: #000; font-size: 1.1rem; font-family: Arial, sans-serif;">
+                    @ViewBag.ModalError
+                </h5>
+                <button type="button" style="background-color: #ff0025; color: white; border: none; padding: 10px 50px; font-size: 1rem; cursor: pointer;" 
+                        onmouseover="this.style.backgroundColor='#d1001f'" 
+                        onmouseout="this.style.backgroundColor='#ff0025'" 
+                        onclick="document.getElementById('errorModal').style.display='none'">
+                    Continuar
+                </button>
+            </div>
+        </div>
+    }
+
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-md-7 bg-cinemex text-white p-5 d-flex flex-column justify-content-center">
+                <h1 class="display-3 fw-bold" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">¿SABES QUÉ ES CINEMEX LOOP?</h1>
+                <p class="fs-4 mt-3"><strong>El mejor programa de recompensas</strong> que premia tu diversión.</p>
+                <p class="mb-5">Regístrate aquí y empieza a disfrutar la experiencia de ser miembro Cinemex Loop.</p>
+                
+                <ul class="list-unstyled fs-5">
+                    <li class="mb-3"><i class="bi bi-100 me-2"></i> Acumula puntos en cada una de tus compras.</li>
+                    <li class="mb-3"><i class="bi bi-ticket-perforated me-2"></i> Canjea tus puntos por boletos en la taquilla y productos en dulcería.</li>
+                    <li class="mb-3"><i class="bi bi-people me-2"></i> Todos los martes 2x1.</li>
+                    <li class="mb-3"><i class="bi bi-basket me-2"></i> Combo Lunes y Jueves a precio preferencial.</li>
+                    <li class="mb-3"><i class="bi bi-gift me-2"></i> Recibe regalos en el mes de tu cumpleaños.</li>
+                </ul>
+            </div>
+
+            <div class="col-md-5 bg-white d-flex flex-column justify-content-center align-items-center position-relative">
+                
+                <div id="loginContainer" style="width: 80%; max-width: 400px;">
+                    <h2 class="text-center fw-bold mb-3" style="font-family: 'Impact', sans-serif;">¡HOLAAAA!</h2>
+                    <p class="text-center text-muted mb-5">Ingresa con tu usuario y contraseña.</p>
+
+                    <form method="post" action="/Account/Login">
+                        <div class="mb-4 position-relative">
+                            <input type="email" name="email" class="form-control cinemex-input" placeholder="Correo electrónico" required>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <input type="password" name="password" id="loginPassword" class="form-control cinemex-input" placeholder="Contraseña" required>
+                            <i class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y text-muted" id="togglePassword" style="cursor: pointer;"></i>
+                        </div>
+
+                        <button type="submit" class="btn btn-ingresar w-100 py-2 mb-3">Ingresar</button>
+                        
+                        <div class="text-center mb-4">
+                            <a href="#" class="text-decoration-none text-dark small">¿Olvidaste tu contraseña?</a>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <span class="text-muted">¿No tienes cuenta?</span> <a class="text-cinemex fw-bold" id="btnShowRegister">Regístrate aquí</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="registerContainer" style="width: 80%; max-width: 400px; display: none;">
+                    <i class="bi bi-arrow-left back-arrow mb-3 d-block" id="btnBackToLogin"></i>
+                    
+                    <h2 class="fw-bold mb-4" style="font-family: 'Impact', sans-serif; line-height: 1.1;">COMPLETA TU<br>REGISTRO</h2>
+                    
+                    <div class="text-center mb-4">
+                        <i class="bi bi-envelope-paper fs-1 text-muted"></i>
+                        <p class="mt-2 text-muted">Por favor escribe tu correo electrónico y una contraseña.</p>
+                    </div>
+
+                    <form method="post" action="/Account/Register">
+                        <div class="mb-4 position-relative">
+                            <input type="email" name="email" class="form-control cinemex-input" placeholder="Correo electrónico" required>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <input type="password" name="password" class="form-control cinemex-input" placeholder="Contraseña" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-ingresar w-100 py-2 mb-4">Validar</button>
+                        
+                        <div class="text-center mt-2">
+                            <span class="text-muted">¿Ya tienes cuenta?</span> <a class="text-cinemex fw-bold" id="btnShowLogin">Inicia sesión aquí</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loginContainer = document.getElementById('loginContainer');
+        const registerContainer = document.getElementById('registerContainer');
+        
+        // Esta lógica mantiene la pestaña de registro abierta si hubo un error al registrarse
+        @if (ViewBag.ShowRegister != null && (bool)ViewBag.ShowRegister == true)
+        {
+            <text>
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+            </text>
+        }
+
+        // Interacciones de vistas
+        document.getElementById('btnShowRegister').addEventListener('click', () => {
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+        });
+
+        const showLogin = () => {
+            registerContainer.style.display = 'none';
+            loginContainer.style.display = 'block';
+        };
+
+        document.getElementById('btnShowLogin').addEventListener('click', showLogin);
+        document.getElementById('btnBackToLogin').addEventListener('click', showLogin);
+
+        // Mostrar/Ocultar Contraseña
+        const togglePassword = document.getElementById('togglePassword');
+        const loginPassword = document.getElementById('loginPassword');
+        
+        togglePassword.addEventListener('click', function () {
+            const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            loginPassword.setAttribute('type', type);
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+    </script>
+</body>
+</html>

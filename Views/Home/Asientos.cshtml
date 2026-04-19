@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "Seleccionar Asientos";
+    var horario = ViewBag.Horario;
+    var cine = ViewBag.Cine;
+    var ocupados = ViewBag.Ocupados as List<string> ?? new List<string>();
+    var filas = new[] { "I", "H", "G", "F", "E", "D", "C", "B", "A" };
+}
+
+<style>
+    .bg-light-gray { background-color: #f8f9fa; }
+    .screen { background: linear-gradient(to bottom, #d1d1d1, #fff); height: 60px; width: 100%; margin-bottom: 40px; transform: perspective(200px) rotateX(-5deg); box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; color: #777; font-weight: bold; letter-spacing: 5px; line-height: 60px; }
+    .seat { width: 35px; height: 35px; background-color: #0080ff; border-radius: 8px 8px 3px 3px; margin: 5px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: bold; }
+    .seat:hover { filter: brightness(1.2); transform: scale(1.1); }
+    .seat.selected { background-color: #E50914; }
+    .seat.occupied { background-color: #ccc; cursor: not-allowed; color: #999; }
+    .seat.occupied:hover { filter: none; transform: none; }
+    .seat-row { display: flex; justify-content: center; align-items: center; }
+    .row-letter { width: 30px; font-weight: bold; color: #555; text-align: right; margin-right: 15px; }
+    .summary-panel { background: white; border: 1px solid #ddd; padding: 20px; position: sticky; top: 20px; }
+    .btn-pagar { background-color: #E50914; color: white; border: none; font-weight: bold; font-size: 1.1rem; }
+    .btn-pagar:hover { background-color: #b30710; color: white; }
+</style>
+
+<div class="bg-light-gray py-5 text-dark" style="min-height: 80vh;">
+    <div class="container">
+        <h2 class="fw-bold mb-2" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">ELIGE TUS LUGARES</h2>
+        <p class="text-muted mb-5"><i class="bi bi-clock me-1"></i> Tradicional 2D Español - <strong>@horario hrs</strong> | Cinemex @cine</p>
+
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="bg-white p-4 border rounded shadow-sm overflow-auto text-center">
+                    <div class="screen mb-5">PANTALLA</div>
+                    @foreach(var fila in filas)
+                    {
+                        <div class="seat-row mb-1">
+                            <div class="row-letter">@fila</div>
+                            @for(int i = 1; i <= 10; i++)
+                            {
+                                var numAsiento = fila + i;
+                                var isOccupied = ocupados.Contains(numAsiento) ? "occupied" : "";
+                                var marginClass = (i == 3 || i == 7) ? "me-4" : "";
+                                <div class="seat @isOccupied @marginClass" data-asiento="@numAsiento">@i</div>
+                            }
+                        </div>
+                    }
+                    <div class="d-flex justify-content-center mt-5">
+                        <div class="d-flex align-items-center me-4"><div class="seat ms-0" style="width: 20px; height: 20px;"></div><span class="small ms-2">Disponible</span></div>
+                        <div class="d-flex align-items-center me-4"><div class="seat selected ms-0" style="width: 20px; height: 20px;"></div><span class="small ms-2">Tu Selección</span></div>
+                        <div class="d-flex align-items-center"><div class="seat occupied ms-0" style="width: 20px; height: 20px; color:transparent;"></div><span class="small ms-2">Ocupado</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="summary-panel shadow-sm">
+                    <h5 class="fw-bold border-bottom pb-2 mb-3">RESUMEN DE COMPRA</h5>
+                    <p class="fw-bold text-danger mb-1">Michael: La Historia de Michael Jackson</p>
+                    <p class="small text-muted mb-3">Cinemex @cine | @horario hrs</p>
+                    
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Boletos:</span><span id="seatCount" class="fw-bold">0</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Asientos:</span><span id="seatsDisplay" class="fw-bold text-primary">Ninguno</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Precio c/u:</span><span>$55.00</span></div>
+                    <div class="d-flex justify-content-between mb-4 pb-3 border-bottom"><span class="text-muted">Cargo por servicio:</span><span>$16.00</span></div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="fs-5 fw-bold">TOTAL:</span><span id="totalPrice" class="fs-4 fw-bold text-danger">$0.00</span>
+                    </div>
+
+                    <form method="post" action="/Home/Pago">
+                        <input type="hidden" name="horario" value="@horario" />
+                        <input type="hidden" name="cine" value="@cine" />
+                        <input type="hidden" name="asientos" id="inputAsientos" value="" />
+                        <input type="hidden" name="cantidadAsientos" id="inputCantidad" value="0" />
+                        <input type="hidden" name="totalPagar" id="inputTotal" value="$0.00" />
+                        <button type="submit" class="btn btn-pagar w-100 py-3 rounded-0" id="btnContinuar" disabled>Continuar al Pago</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const seats = document.querySelectorAll('.seat:not(.occupied):not(.ms-0)');
+    const countDisplay = document.getElementById('seatCount');
+    const totalDisplay = document.getElementById('totalPrice');
+    const seatsDisplay = document.getElementById('seatsDisplay');
+    const btnContinuar = document.getElementById('btnContinuar');
+    const inputCantidad = document.getElementById('inputCantidad');
+    const inputTotal = document.getElementById('inputTotal');
+    const inputAsientos = document.getElementById('inputAsientos');
+    
+    const ticketPrice = 55;
+    const serviceFee = 16;
+    let selectedSeatsArray = [];
+
+    seats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            seat.classList.toggle('selected');
+            const numAsiento = seat.getAttribute('data-asiento');
+            
+            if(seat.classList.contains('selected')) { selectedSeatsArray.push(numAsiento); } 
+            else { selectedSeatsArray = selectedSeatsArray.filter(s => s !== numAsiento); }
+            
+            selectedSeatsArray.sort();
+            let selectedCount = selectedSeatsArray.length;
+            
+            let rawTotal = selectedCount > 0 ? (selectedCount * ticketPrice) + serviceFee : 0;
+            let total = '$' + rawTotal.toFixed(2);
+            
+            countDisplay.innerText = selectedCount;
+            totalDisplay.innerText = total;
+            seatsDisplay.innerText = selectedCount > 0 ? selectedSeatsArray.join(', ') : 'Ninguno';
+            
+            inputCantidad.value = selectedCount;
+            inputTotal.value = total;
+            inputAsientos.value = selectedSeatsArray.join(',');
+            
+            if(selectedCount > 0) btnContinuar.removeAttribute('disabled');
+            else btnContinuar.setAttribute('disabled', 'true');
+        });
+    });
+</script>

@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cinemex</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body { background-color: #000; color: #fff; }
+        
+        /* Navbar */
+        .navbar-cinemex { background-color: #000; border-bottom: 1px solid #333; }
+        .nav-link { color: #fff !important; font-size: 0.9rem; margin-right: 15px; }
+        .nav-link:hover { color: #E50914 !important; }
+        .btn-cambiar-cine { background: transparent; color: white; border: none; font-size: 0.9rem; }
+        .btn-cambiar-cine:focus { outline: none; }
+        .user-icon { font-size: 1.5rem; color: white; cursor: pointer; }
+        
+        /* Footer Cinemex */
+        .footer-cinemex { background-color: #333333; color: #fff; font-family: Arial, sans-serif; }
+        .footer-cinemex .col-md-4 { border-right: 1px solid #555; }
+        .footer-cinemex .col-md-4:last-child { border-right: none; }
+        .social-circle {
+            display: inline-flex; justify-content: center; align-items: center;
+            width: 45px; height: 45px; border-radius: 50%; border: 1px solid #fff;
+            color: #fff; text-decoration: none; font-size: 1.2rem; transition: 0.3s;
+        }
+        .social-circle:hover { background-color: #E50914; border-color: #E50914; color: #fff; }
+        .footer-link { color: #ddd; text-decoration: none; font-size: 0.85rem; display: block; margin-bottom: 8px; transition: 0.2s; }
+        .footer-link:hover { color: #fff; text-decoration: underline; }
+        .copyright-text { font-size: 0.75rem; color: #aaa; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-cinemex py-3">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-film text-white fs-2 me-2"></i>
+                    <span class="text-white fw-bold fs-4" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">Cinemex</span>
+                </a>
+                
+                <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
+                        <li class="nav-item"><a class="nav-link" href="#">Cartelera</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" style="font-family: cursive;">loop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Preventas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">IMAX</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Más <i class="bi bi-caret-down-fill" style="font-size: 0.7rem;"></i></a></li>
+                        <li class="nav-item ms-2"><a class="nav-link" href="#"><i class="bi bi-search"></i></a></li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        
+                        <div class="dropdown me-4">
+                            <button class="btn-cambiar-cine dropdown-toggle" type="button" id="dropdownCine" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span id="navCineSeleccionado">Cambiar cine</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="dropdownCine">
+                                <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Céntrika">Céntrika</a></li>
+                                <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Garza Sada">Garza Sada</a></li>
+                                <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Lincoln">Lincoln</a></li>
+                                <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Mol Concordia">Mol Concordia</a></li>
+                                <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Pabellón M">Pabellón M</a></li>
+                            </ul>
+                        </div>
+                        
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <div class="dropdown">
+                                <i class="bi bi-person-circle user-icon" data-bs-toggle="dropdown"></i>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow">
+                                    <li><span class="dropdown-item-text text-muted small">@User.Identity.Name</span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login"><i class="bi bi-person-circle user-icon"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="footer-cinemex mt-5 py-5">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-4 px-md-4 text-center text-md-start mb-4 mb-md-0">
+                    <p class="mb-1 fs-5">Atención telefónica</p>
+                    <h1 class="fw-bold text-white mb-4">55 5257-6969</h1>
+                    <div class="d-flex justify-content-center justify-content-md-start gap-3">
+                        <a href="https://www.facebook.com/Cinemex" target="_blank" class="social-circle"><i class="bi bi-facebook"></i></a>
+                        <a href="https://twitter.com/Cinemex" target="_blank" class="social-circle"><i class="bi bi-twitter-x"></i></a>
+                        <a href="https://www.instagram.com/cinemex" target="_blank" class="social-circle"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.youtube.com/user/CinemexOficial" target="_blank" class="social-circle"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 px-md-5 mb-4 mb-md-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="#" class="footer-link">Sobre Cinemex</a>
+                            <a href="#" class="footer-link">Factura Electrónica</a>
+                            <a href="#" class="footer-link">Ventas Corporativas</a>
+                            <a href="#" class="footer-link">Términos y Condiciones Productos Cinemex</a>
+                            <a href="#" class="footer-link">Política de precios</a>
+                            <a href="#" class="footer-link">Política de reembolsos</a>
+                            <a href="#" class="footer-link">Atracción de Talento</a>
+                            <a href="#" class="footer-link">Términos y condiciones</a>
+                            <a href="#" class="footer-link">Aviso de Privacidad</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 px-md-4 d-flex flex-column justify-content-between">
+                    <div class="d-flex gap-3 justify-content-center justify-content-md-start mb-4">
+                        <a href="https://apps.apple.com/mx/app/cinemex/id418163740" target="_blank">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" height="40" alt="App Store">
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.cinemex&hl=es_MX" target="_blank">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" height="40" alt="Google Play">
+                        </a>
+                    </div>
+                    
+                    <div class="d-flex gap-4 justify-content-center justify-content-md-start align-items-center opacity-75 mt-auto border-top border-secondary pt-3 flex-wrap">
+                        <span class="small fw-bold">canacine</span>
+                        <span class="small fw-bold">alboa.</span>
+                        <span class="small fw-bold">ARENA</span>
+                        <div class="text-center">
+                            <span class="small bg-primary text-white px-2 py-1 rounded d-block mb-1"><i>PayPal</i></span>
+                            <span style="font-size: 0.6rem;">Cómo funciona PayPal</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12 text-end">
+                    <p class="copyright-text mb-0">
+                        Derechos reservados &copy; Cadena Mexicana de exhibición S.A de CV2013. Sitio desarrollado no oficial
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const navText = document.getElementById('navCineSeleccionado');
+            const options = document.querySelectorAll('.nav-cine-option');
+            
+            const savedCine = localStorage.getItem('cinePreferido');
+            if(savedCine) {
+                navText.innerText = savedCine;
+            }
+
+            options.forEach(item => {
+                item.addEventListener('click', event => {
+                    event.preventDefault();
+                    const cineName = event.target.getAttribute('data-cine');
+                    navText.innerText = cineName;
+                    localStorage.setItem('cinePreferido', cineName);
+                });
+            });
+        });
+    </script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
