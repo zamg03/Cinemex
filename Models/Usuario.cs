@@ -7,11 +7,25 @@ namespace Cinemex.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "El correo es obligatorio")]
-        [EmailAddress]
+        [Required]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "La contraseña es obligatoria")]
+        [Required]
         public string Password { get; set; }
+
+        // Nuevos campos obligatorios
+        [Required]
+        public string Nombres { get; set; }
+
+        [Required]
+        public string ApellidoPaterno { get; set; }
+
+        public string ApellidoMaterno { get; set; } // Lo dejamos opcional
+
+        [Required]
+        public string Telefono { get; set; }
+
+        [Required]
+        public string FechaNacimiento { get; set; }
     }
 }

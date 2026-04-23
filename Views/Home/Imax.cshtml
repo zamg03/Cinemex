@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Conoce IMAX";
+}
+
+<style>
+    .sidebar-link { display: block; padding: 12px 0; color: #333; text-decoration: none; border-bottom: 1px solid #ddd; font-size: 0.95rem; }
+    .sidebar-link:hover { color: #E50914; }
+    .sidebar-link.active { color: #E50914; font-weight: bold; }
+    
+    .imax-title-large { font-family: 'Impact', sans-serif; font-size: 3rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1; margin-bottom: 30px; }
+    
+    .back-arrow { font-size: 1.5rem; color: #333; text-decoration: none; transition: 0.3s; display: inline-block; margin-bottom: 15px; }
+    .back-arrow:hover { color: #E50914; }
+    
+    .content-title { color: #E50914; font-size: 1.8rem; margin-bottom: 20px; font-weight: normal; }
+    
+    /* El truco para pegar las imágenes sin dejar un solo píxel en blanco */
+    .imax-images-container img {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        vertical-align: top;
+    }
+</style>
+
+<div class="bg-white text-dark py-5" style="min-height: 80vh;">
+    <div class="container mt-2">
+        <div class="row">
+            
+            <div class="col-md-3 mb-4 pe-md-4">
+                <a href="javascript:history.back()" class="back-arrow"><i class="bi bi-arrow-left"></i></a>
+                
+                <h2 class="imax-title-large">IMAX</h2>
+
+                <div class="mt-4 border-top pt-2">
+                    <a href="#" class="sidebar-link active">Conoce IMAX</a>
+                    <a href="#" class="sidebar-link">Cines</a>
+                    <a href="#" class="sidebar-link">Películas</a>
+                </div>
+            </div>
+
+            <div class="col-md-9 ps-md-5">
+                <h3 class="content-title">Conoce IMAX</h3>
+                
+                <div class="imax-images-container">
+                    <img src="~/images/imax/conoce_imax.jpg" alt="Conoce IMAX Parte 1">
+                    <img src="~/images/imax/conoce_imax2.jpg" alt="Conoce IMAX Parte 2">
+                    <img src="~/images/imax/conoce_imax3.jpg" alt="Conoce IMAX Parte 3">
+                    <img src="~/images/imax/conoce_imax4.jpg" alt="Conoce IMAX Parte 4">
+                    <img src="~/images/imax/conoce_imax5.jpg" alt="Conoce IMAX Parte 5">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -1,5 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = ViewBag.SoloPreventas ? "Preventas" : "Cartelera";
+    bool soloPreventas = ViewBag.SoloPreventas;
+    string busqueda = ViewBag.Busqueda as string;
 
     var peliculas = new List<Dictionary<string, string>> {
         new Dictionary<string, string> { { "Titulo", "Super Mario Galaxy: La Película" }, { "Poster", "/images/posters/mario.jpg" }, { "Sala", "Sala 1" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "13:00,16:00,19:00,22:00" }, { "Trailer", "https://www.youtube.com/embed/ipzEY7c7it8" }, { "EsPreventa", "false" }, { "Original", "Super Mario Galaxy: The Movie" }, { "Clasificacion", "AA" }, { "Genero", "Animación, Aventura" }, { "Director", "Aaron Horvath, Michael Jelenic" }, { "Actores", "Chris Pratt, Jack Black, Anya Taylor-Joy" }, { "Pais", "Estados Unidos, Japón" }, { "Duracion", "1h 45m" }, { "Distribuidor", "Universal Pictures" } },
@@ -9,77 +11,51 @@
         new Dictionary<string, string> { { "Titulo", "Instinto implacable" }, { "Poster", "/images/posters/instinto.jpg" }, { "Sala", "Sala 5" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "15:00,18:00,21:00" }, { "Trailer", "https://www.youtube.com/embed/ryDs5vuGCvs" }, { "EsPreventa", "false" }, { "Original", "Relentless Instinct" }, { "Clasificacion", "C" }, { "Genero", "Acción, Thriller" }, { "Director", "Chad Stahelski" }, { "Actores", "Keanu Reeves, Charlize Theron" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 15m" }, { "Distribuidor", "Lionsgate" } },
         new Dictionary<string, string> { { "Titulo", "Bulevar" }, { "Poster", "/images/posters/bulevar.jpg" }, { "Sala", "Sala 6" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "15:30,18:30,21:30" }, { "Trailer", "https://www.youtube.com/embed/rZ6xn57p4J0" }, { "EsPreventa", "false" }, { "Original", "Boulevard" }, { "Clasificacion", "B" }, { "Genero", "Romance, Drama" }, { "Director", "Damien Chazelle" }, { "Actores", "Ryan Gosling, Emma Stone" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 50m" }, { "Distribuidor", "Paramount Pictures" } },
         
-        // MICHAEL AHORA ES CARTELERA GENERAL (EsPreventa = false, Fechas inician HOY)
+        // MICHAEL TAMBIÉN ACTUALIZADO AQUÍ
         new Dictionary<string, string> { { "Titulo", "Michael: La Historia De Michael Jackson" }, { "Poster", "/images/posters/michael.jpg" }, { "Sala", "Sala 7" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "14:00,17:00,20:00" }, { "Trailer", "https://www.youtube.com/embed/7wWEvqjsvxE" }, { "EsPreventa", "false" }, { "Original", "Michael" }, { "Clasificacion", "A" }, { "Genero", "Biografía, Musical" }, { "Director", "Antoine Fuqua" }, { "Actores", "Jaafar Jackson, Colman Domingo, Miles Teller" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 5m" }, { "Distribuidor", "Universal Pictures" } },
         
         new Dictionary<string, string> { { "Titulo", "El Diablo Viste A La Moda 2" }, { "Poster", "/images/posters/diablo.jpg" }, { "Sala", "Sala 8" }, { "Fechas", "29 DE ABR.,30 DE ABR.,01 DE MAY." }, { "Horarios", "14:30,17:30,20:30" }, { "Trailer", "https://www.youtube.com/embed/aXdjJbVrJeg" }, { "EsPreventa", "true" }, { "Original", "The Devil Wears Prada 2" }, { "Clasificacion", "B" }, { "Genero", "Comedia, Drama" }, { "Director", "David Frankel" }, { "Actores", "Meryl Streep, Anne Hathaway, Emily Blunt" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 58m" }, { "Distribuidor", "20th Century Studios" } },
         new Dictionary<string, string> { { "Titulo", "Billie Eilish - Hit Me Hard and Soft: El Tour en 3D" }, { "Poster", "/images/posters/billie.jpg" }, { "Sala", "Sala 9" }, { "Fechas", "07 DE MAY.,08 DE MAY.,09 DE MAY." }, { "Horarios", "15:00,18:00,21:00" }, { "Trailer", "https://www.youtube.com/embed/3pcP1wwdxfo" }, { "EsPreventa", "true" }, { "Original", "Billie Eilish - Hit Me Hard and Soft Tour 3D" }, { "Clasificacion", "A" }, { "Genero", "Documental, Musical" }, { "Director", "Sam Wrench" }, { "Actores", "Billie Eilish, Finneas O'Connell" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 20m" }, { "Distribuidor", "Trafalgar Releasing" } }
     };
-    var carteleraNormal = peliculas.Where(p => p["EsPreventa"] == "false").ToList();
-    var preventas = peliculas.Where(p => p["EsPreventa"] == "true").ToList();
+    var peliculasMostradas = soloPreventas ? peliculas.Where(p => p["EsPreventa"] == "true").ToList() : peliculas;
+    if (!string.IsNullOrEmpty(busqueda)) {
+        peliculasMostradas = peliculasMostradas.Where(p => p["Titulo"].ToLower().Contains(busqueda.ToLower())).ToList();
+    }
 }
-
 <style>
-    .video-background-hero { position: relative; width: 100%; height: 75vh; min-height: 550px; overflow: hidden; background-color: #000; }
-    .video-background-hero iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; min-width: 177.77vh; min-height: 56.25vw; transform: translate(-50%, -50%); pointer-events: none; }
-    .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.3) 100%); z-index: 1; }
-    .hero-content { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; }
-    .poster-img { width: 260px; border-radius: 5px; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
-    .btn-rojo { background-color: #E50914; color: white; border: none; padding: 12px 35px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
-    .btn-rojo:hover { background-color: #b30710; color: white; }
-    .cine-title { font-family: 'Impact', sans-serif; letter-spacing: 1px; font-size: 2.5rem; color: #333; }
+    .cine-title { font-family: 'Impact', sans-serif; letter-spacing: 1px; font-size: 2.2rem; }
     .movie-card { border: none; background-color: transparent; transition: transform 0.3s; }
     .movie-card:hover { transform: translateY(-5px); }
-    .movie-poster { width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin-bottom: 15px; height: 350px; object-fit: cover; cursor:pointer; }
-    .movie-title-dark { color: #333; font-weight: bold; font-size: 0.9rem; }
-    .btn-outline-blanco { background-color: transparent; color: #fff; border: 1px solid #fff; padding: 10px 30px; transition: 0.3s; }
-    .btn-outline-blanco:hover { background-color: rgba(255,255,255,0.1); color: #fff; }
+    .movie-poster { width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-bottom: 15px; height: 350px; object-fit: cover; cursor:pointer; }
+    .btn-rojo { background-color: #E50914; color: white; border: none; transition: 0.3s; }
+    .btn-rojo:hover { background-color: #b30710; color: white; }
+    .btn-outline-dark { background-color: transparent; color: #333; border: 1px solid #333; transition: 0.3s; }
+    .btn-outline-dark:hover { background-color: #eee; color: #333; }
 </style>
-
-<div class="video-background-hero mb-5">
-    <iframe src="https://www.youtube.com/embed/7wWEvqjsvxE?autoplay=1&mute=1&loop=1&playlist=7wWEvqjsvxE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <div class="video-overlay"></div>
-    <div class="container hero-content text-white">
-        <div class="d-flex align-items-center w-100">
-            <div class="me-5 d-none d-md-block"><img src="/images/posters/michael.jpg" class="poster-img"></div>
-            <div>
-                <p class="text-uppercase mb-2 fw-bold" style="font-size: 0.8rem; letter-spacing: 1px;">Destacada de la semana <i class="bi bi-star-fill text-warning"></i></p>
-                <h1 class="display-3 fw-bold text-danger mb-4 text-uppercase" style="font-family: 'Impact', sans-serif; line-height: 1;">Michael: La Historia de<br>Michael Jackson</h1>
-                <div class="d-flex gap-3 mt-4">
-                    <button class="btn btn-rojo rounded-0 btn-abrir-panel" 
-                            data-pelicula="Michael: La Historia De Michael Jackson" data-poster="/images/posters/michael.jpg" data-sala="Sala 7" data-fechas="HOY,MAÑANA,24 DE ABR." data-horarios="14:00,17:00,20:00" data-trailer="https://www.youtube.com/embed/7wWEvqjsvxE" data-preventa="false" data-original="Michael" data-clasif="A" data-genero="Biografía, Musical" data-director="Antoine Fuqua" data-actores="Jaafar Jackson, Colman Domingo, Miles Teller" data-pais="Estados Unidos" data-duracion="2h 5m" data-dist="Universal Pictures">Comprar boletos</button>
-                    <a href="https://www.youtube.com/watch?v=7wWEvqjsvxE" target="_blank" class="btn btn-outline-blanco rounded-0">Ver tráiler completo</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container pb-5">
-    <h2 class="cine-title mb-4 border-bottom border-secondary pb-2 text-uppercase">En cartelera</h2>
-    <div class="row g-4 mb-5">
-        @foreach(var p in carteleraNormal) {
-            <div class="col-md-2 col-6">
-                <div class="movie-card text-center">
-                    <img src="@p["Poster"]" class="movie-poster btn-abrir-panel" 
-                         data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">
-                    <h6 class="movie-title-dark text-truncate mb-3" title="@p["Titulo"]">@p["Titulo"]</h6>
-                    <button class="btn btn-rojo w-100 rounded-0 py-1 btn-abrir-panel" 
-                            data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">Boletos</button>
-                </div>
-            </div>
+<div class="container py-5 mt-4" style="min-height: 70vh;">
+    @if (!string.IsNullOrEmpty(busqueda)) {
+        <p class="text-muted mb-1">Resultados de búsqueda para:</p>
+        <h2 class="cine-title mb-5 border-bottom border-secondary pb-2 text-dark">"@busqueda" <i class="bi bi-search ms-2 text-danger"></i></h2>
+        if(peliculasMostradas.Count == 0) {
+            <div class="text-center py-5"><i class="bi bi-emoji-frown fs-1 text-muted mb-3"></i><h4 class="text-muted">No encontramos películas con ese nombre.</h4></div>
         }
-    </div>
-    <h2 class="cine-title mb-4 border-bottom border-secondary pb-2 text-uppercase">Preventas <i class="bi bi-ticket-perforated text-danger"></i></h2>
-    <div class="row g-4 mb-5">
-        @foreach(var p in preventas) {
+    } else {
+        <h2 class="cine-title mb-5 border-bottom border-secondary pb-2 text-dark text-uppercase">@(soloPreventas ? "PREVENTAS" : "TODA LA CARTELERA") <i class="bi bi-film ms-2 text-danger"></i></h2>
+    }
+    <div class="row g-4">
+        @foreach(var p in peliculasMostradas) {
             <div class="col-md-2 col-6">
                 <div class="movie-card text-center">
                     <img src="@p["Poster"]" class="movie-poster btn-abrir-panel" 
                          data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">
-                    <h6 class="movie-title-dark text-truncate mb-3" title="@p["Titulo"]">@p["Titulo"]</h6>
-                    <button class="btn btn-rojo w-100 rounded-0 py-1 btn-abrir-panel" 
-                            data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">Preventa</button>
+                    <h6 class="text-dark text-truncate mb-3 fw-bold" title="@p["Titulo"]">@p["Titulo"]</h6>
+                    @if(p["EsPreventa"] == "true") {
+                        <button class="btn btn-outline-dark w-100 rounded-0 py-1 btn-abrir-panel" 
+                                data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">Preventa</button>
+                    } else {
+                        <button class="btn btn-rojo w-100 rounded-0 py-1 btn-abrir-panel" 
+                                data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">Boletos</button>
+                    }
                 </div>
             </div>
         }

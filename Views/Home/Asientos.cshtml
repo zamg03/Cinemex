@@ -1,5 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Seleccionar Asientos";
+    var pelicula = ViewBag.Pelicula as string;
+    var poster = ViewBag.Poster as string;
+    var fecha = ViewBag.Fecha as string;
+    var sala = ViewBag.Sala as string;
     var horario = ViewBag.Horario;
     var cine = ViewBag.Cine;
     var ocupados = ViewBag.Ocupados as List<string> ?? new List<string>();
@@ -23,19 +27,17 @@
 
 <div class="bg-light-gray py-5 text-dark" style="min-height: 80vh;">
     <div class="container">
-        <h2 class="fw-bold mb-2" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">ELIGE TUS LUGARES</h2>
-        <p class="text-muted mb-5"><i class="bi bi-clock me-1"></i> Tradicional 2D Español - <strong>@horario hrs</strong> | Cinemex @cine</p>
+        <h2 class="fw-bold mb-2 text-uppercase" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">@pelicula</h2>
+        <p class="text-muted mb-5"><i class="bi bi-clock me-1"></i> Tradicional 2D Español - <strong>@fecha, @horario hrs</strong> | Cinemex @cine | @sala</p>
 
         <div class="row">
             <div class="col-lg-8 mb-4">
                 <div class="bg-white p-4 border rounded shadow-sm overflow-auto text-center">
                     <div class="screen mb-5">PANTALLA</div>
-                    @foreach(var fila in filas)
-                    {
+                    @foreach(var fila in filas) {
                         <div class="seat-row mb-1">
                             <div class="row-letter">@fila</div>
-                            @for(int i = 1; i <= 10; i++)
-                            {
+                            @for(int i = 1; i <= 10; i++) {
                                 var numAsiento = fila + i;
                                 var isOccupied = ocupados.Contains(numAsiento) ? "occupied" : "";
                                 var marginClass = (i == 3 || i == 7) ? "me-4" : "";
@@ -54,8 +56,8 @@
             <div class="col-lg-4">
                 <div class="summary-panel shadow-sm">
                     <h5 class="fw-bold border-bottom pb-2 mb-3">RESUMEN DE COMPRA</h5>
-                    <p class="fw-bold text-danger mb-1">Michael: La Historia de Michael Jackson</p>
-                    <p class="small text-muted mb-3">Cinemex @cine | @horario hrs</p>
+                    <p class="fw-bold text-danger mb-1">@pelicula</p>
+                    <p class="small text-muted mb-3">Cinemex @cine | @fecha, @horario hrs | @sala</p>
                     
                     <div class="d-flex justify-content-between mb-2"><span class="text-muted">Boletos:</span><span id="seatCount" class="fw-bold">0</span></div>
                     <div class="d-flex justify-content-between mb-2"><span class="text-muted">Asientos:</span><span id="seatsDisplay" class="fw-bold text-primary">Ninguno</span></div>
@@ -67,6 +69,10 @@
                     </div>
 
                     <form method="post" action="/Home/Pago">
+                        <input type="hidden" name="pelicula" value="@pelicula" />
+                        <input type="hidden" name="poster" value="@poster" />
+                        <input type="hidden" name="fecha" value="@fecha" />
+                        <input type="hidden" name="sala" value="@sala" />
                         <input type="hidden" name="horario" value="@horario" />
                         <input type="hidden" name="cine" value="@cine" />
                         <input type="hidden" name="asientos" id="inputAsientos" value="" />
@@ -90,34 +96,20 @@
     const inputTotal = document.getElementById('inputTotal');
     const inputAsientos = document.getElementById('inputAsientos');
     
-    const ticketPrice = 55;
-    const serviceFee = 16;
-    let selectedSeatsArray = [];
+    const ticketPrice = 55; const serviceFee = 16; let selectedSeatsArray = [];
 
     seats.forEach(seat => {
         seat.addEventListener('click', () => {
             seat.classList.toggle('selected');
             const numAsiento = seat.getAttribute('data-asiento');
-            
-            if(seat.classList.contains('selected')) { selectedSeatsArray.push(numAsiento); } 
-            else { selectedSeatsArray = selectedSeatsArray.filter(s => s !== numAsiento); }
-            
+            if(seat.classList.contains('selected')) { selectedSeatsArray.push(numAsiento); } else { selectedSeatsArray = selectedSeatsArray.filter(s => s !== numAsiento); }
             selectedSeatsArray.sort();
             let selectedCount = selectedSeatsArray.length;
-            
             let rawTotal = selectedCount > 0 ? (selectedCount * ticketPrice) + serviceFee : 0;
             let total = '$' + rawTotal.toFixed(2);
-            
-            countDisplay.innerText = selectedCount;
-            totalDisplay.innerText = total;
-            seatsDisplay.innerText = selectedCount > 0 ? selectedSeatsArray.join(', ') : 'Ninguno';
-            
-            inputCantidad.value = selectedCount;
-            inputTotal.value = total;
-            inputAsientos.value = selectedSeatsArray.join(',');
-            
-            if(selectedCount > 0) btnContinuar.removeAttribute('disabled');
-            else btnContinuar.setAttribute('disabled', 'true');
+            countDisplay.innerText = selectedCount; totalDisplay.innerText = total; seatsDisplay.innerText = selectedCount > 0 ? selectedSeatsArray.join(', ') : 'Ninguno';
+            inputCantidad.value = selectedCount; inputTotal.value = total; inputAsientos.value = selectedSeatsArray.join(',');
+            if(selectedCount > 0) btnContinuar.removeAttribute('disabled'); else btnContinuar.setAttribute('disabled', 'true');
         });
     });
 </script>

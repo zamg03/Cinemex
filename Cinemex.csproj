@@ -18,4 +18,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\imax\" />
+    <Folder Include="wwwroot\images\posters\" />
+  </ItemGroup>
+
 </Project>

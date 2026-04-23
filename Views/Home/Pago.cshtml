@@ -8,7 +8,7 @@
     .payment-box { border: 1px solid #ccc; padding: 20px; margin-bottom: 15px; background: white; cursor: pointer; transition: 0.2s; }
     .payment-box:hover { border-color: #000; }
     .summary-panel { border-left: 1px solid #eee; padding-left: 40px; }
-    .poster-mini { width: 120px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .poster-mini { width: 120px; height: 180px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     .text-danger-cine { color: #E50914; }
     .input-cine { border: 0; border-bottom: 1px solid #ccc; border-radius: 0; padding-left: 0; background: transparent; }
     .input-cine:focus { box-shadow: none; border-color: #000; }
@@ -34,6 +34,10 @@
 
                 <div id="formTarjeta" class="p-4 border border-top-0 bg-white mb-4" style="display:block;">
                     <form id="paymentForm" method="post" action="/Home/Confirmacion">
+                        <input type="hidden" name="pelicula" value="@ViewBag.Pelicula" />
+                        <input type="hidden" name="poster" value="@ViewBag.Poster" />
+                        <input type="hidden" name="fecha" value="@ViewBag.Fecha" />
+                        <input type="hidden" name="sala" value="@ViewBag.Sala" />
                         <input type="hidden" name="horario" value="@ViewBag.Horario" />
                         <input type="hidden" name="cine" value="@ViewBag.Cine" />
                         <input type="hidden" name="asientos" value="@ViewBag.Asientos" />
@@ -83,12 +87,12 @@
                 </div>
 
                 <div class="d-flex mb-5">
-                    <img src="https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00OTA2LWFkNmItMzQxMWE2NTA3ZTA3XkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg" class="poster-mini me-4">
+                    <img src="@ViewBag.Poster" class="poster-mini me-4">
                     <div>
-                        <h3 class="fw-bold text-uppercase" style="font-family: 'Impact', sans-serif;">Michael</h3>
-                        <p class="mb-1 text-muted">Cinemex @ViewBag.Cine</p>
-                        <p class="mb-1 text-muted">Hoy, @ViewBag.Horario PM</p>
-                        <p class="mb-1 text-muted">Sala 3</p>
+                        <h3 class="fw-bold text-uppercase" style="font-family: 'Impact', sans-serif; line-height: 1.1;">@ViewBag.Pelicula</h3>
+                        <p class="mb-1 mt-2 text-muted">Cinemex @ViewBag.Cine</p>
+                        <p class="mb-1 text-muted">@ViewBag.Fecha, @ViewBag.Horario hrs</p>
+                        <p class="mb-1 text-muted">@ViewBag.Sala</p>
                         <p class="mb-1 text-muted">Español Tradicional</p>
                     </div>
                 </div>

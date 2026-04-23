@@ -8,61 +8,63 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
-        body { background-color: #000; color: #fff; }
-        
-        /* Navbar */
-        .navbar-cinemex { background-color: #000; border-bottom: 1px solid #333; }
-        .nav-link { color: #fff !important; font-size: 0.9rem; margin-right: 15px; }
+        body { background-color: #fff; color: #333; font-family: Arial, sans-serif; }
+        .navbar-cinemex { background-color: #ffffff; border-bottom: 1px solid #e0e0e0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .nav-link { color: #333 !important; font-size: 0.95rem; margin-right: 15px; font-weight: bold; }
         .nav-link:hover { color: #E50914 !important; }
-        .btn-cambiar-cine { background: transparent; color: white; border: none; font-size: 0.9rem; }
+        .btn-cambiar-cine { background: transparent; color: #333; border: none; font-size: 0.95rem; font-weight: bold; }
         .btn-cambiar-cine:focus { outline: none; }
-        .user-icon { font-size: 1.5rem; color: white; cursor: pointer; }
+        .user-icon { font-size: 1.5rem; color: #333; cursor: pointer; transition: 0.3s; }
+        .user-icon:hover { color: #E50914; }
         
-        /* Footer Cinemex */
         .footer-cinemex { background-color: #333333; color: #fff; font-family: Arial, sans-serif; }
         .footer-cinemex .col-md-4 { border-right: 1px solid #555; }
         .footer-cinemex .col-md-4:last-child { border-right: none; }
-        .social-circle {
-            display: inline-flex; justify-content: center; align-items: center;
-            width: 45px; height: 45px; border-radius: 50%; border: 1px solid #fff;
-            color: #fff; text-decoration: none; font-size: 1.2rem; transition: 0.3s;
-        }
+        .social-circle { display: inline-flex; justify-content: center; align-items: center; width: 45px; height: 45px; border-radius: 50%; border: 1px solid #fff; color: #fff; text-decoration: none; font-size: 1.2rem; transition: 0.3s; }
         .social-circle:hover { background-color: #E50914; border-color: #E50914; color: #fff; }
         .footer-link { color: #ddd; text-decoration: none; font-size: 0.85rem; display: block; margin-bottom: 8px; transition: 0.2s; }
         .footer-link:hover { color: #fff; text-decoration: underline; }
         .copyright-text { font-size: 0.75rem; color: #aaa; }
+        
+        .offcanvas-header { border-bottom: 2px solid #E50914; }
+        .tab-btn { flex-grow: 1; background-color: #f1f1f1; border: 1px solid #ccc; color: #333; padding: 12px 10px; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; transition: 0.2s; }
+        .tab-btn.active { background-color: #ff0025; color: white; border-color: #ff0025; font-weight: bold; }
+        .time-btn-green { border: 1px solid #00d27f; color: #333; padding: 8px 20px; margin-right: 10px; text-decoration: none; display: inline-block; transition: 0.2s; font-weight: 500; border-radius: 3px; }
+        .time-btn-green:hover { background-color: #00d27f; color: white; }
+        .info-row { border-bottom: 1px solid #eee; padding: 12px 0; font-size: 0.9rem; }
+        .info-label { font-weight: bold; font-family: 'Arial Black', sans-serif; font-size: 0.8rem; }
+        .clasif-box { background-color: #000; color: #fff; font-weight: bold; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-cinemex py-3">
+        <nav class="navbar navbar-expand-lg navbar-cinemex py-3 sticky-top">
             <div class="container-fluid px-4">
-                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-film text-white fs-2 me-2"></i>
-                    <span class="text-white fw-bold fs-4" style="font-family: 'Impact', sans-serif; letter-spacing: 1px;">Cinemex</span>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" height="35" alt="Cinemex Logo" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Cinemex_logo.svg';">
                 </a>
-                
                 <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
-                        <li class="nav-item"><a class="nav-link" href="#">Cartelera</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" style="font-family: cursive;">loop</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Preventas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">IMAX</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Cartelera" asp-route-soloPreventas="false">Cartelera</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Loop" style="font-family: cursive; text-transform: lowercase;">loop</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Cartelera" asp-route-soloPreventas="true">Preventas</a></li>
+                        
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Imax">IMAX</a></li>
+                        
                         <li class="nav-item"><a class="nav-link" href="#">Más <i class="bi bi-caret-down-fill" style="font-size: 0.7rem;"></i></a></li>
-                        <li class="nav-item ms-2"><a class="nav-link" href="#"><i class="bi bi-search"></i></a></li>
+                        <li class="nav-item ms-2"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="bi bi-search fs-5"></i></a></li>
                     </ul>
 
                     <div class="d-flex align-items-center">
-                        
                         <div class="dropdown me-4">
                             <button class="btn-cambiar-cine dropdown-toggle" type="button" id="dropdownCine" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span id="navCineSeleccionado">Cambiar cine</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="dropdownCine">
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="dropdownCine">
                                 <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Céntrika">Céntrika</a></li>
                                 <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Garza Sada">Garza Sada</a></li>
                                 <li><a class="dropdown-item nav-cine-option" href="#" data-cine="Lincoln">Lincoln</a></li>
@@ -75,7 +77,7 @@
                         {
                             <div class="dropdown">
                                 <i class="bi bi-person-circle user-icon" data-bs-toggle="dropdown"></i>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow">
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                                     <li><span class="dropdown-item-text text-muted small">@User.Identity.Name</span></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
@@ -92,14 +94,60 @@
         </nav>
     </header>
 
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 rounded-0 shadow-lg">
+          <div class="modal-body p-4">
+            <form method="get" action="/Home/Cartelera" class="d-flex align-items-center border-bottom border-danger pb-2">
+                <i class="bi bi-search fs-4 text-muted me-3"></i>
+                <input type="text" name="buscar" class="form-control border-0 shadow-none fs-4" placeholder="¿Qué película buscas?" required autofocus>
+                <button type="button" class="btn-close ms-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <main role="main">
         @RenderBody()
     </main>
 
+    <div class="offcanvas offcanvas-end text-dark" tabindex="-1" id="movieOffcanvas" style="width: 480px; background-color: #fff;">
+        <div class="offcanvas-header bg-light border-bottom d-flex justify-content-between align-items-center p-3">
+            <span class="fw-bold text-muted small" id="offcanvasHeaderCine">Cinemex Mol Concordia</span>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="ratio ratio-16x9 bg-dark">
+                <iframe id="offcanvasTrailer" src="" allowfullscreen></iframe>
+            </div>
+            <div class="p-4">
+                <h3 class="fw-bold text-uppercase mb-4" id="offcanvasMovieName" style="font-family: 'Impact', sans-serif;">Nombre</h3>
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#movieInfoCollapse">
+                    <span class="text-dark">Información de la película <i class="bi bi-chevron-down ms-1 text-muted"></i></span>
+                    <div class="clasif-box" id="infoClasifBadge">A</div>
+                </div>
+                <div class="collapse mb-4" id="movieInfoCollapse">
+                    <div class="row info-row pt-0"><div class="col-4 info-label">TÍTULO ORIGINAL</div><div class="col-8" id="infoOriginal">...</div></div>
+                    <div class="row info-row"><div class="col-4 info-label">CLASIFICACIÓN</div><div class="col-8" id="infoClasifText">...</div></div>
+                    <div class="row info-row"><div class="col-4 info-label">GÉNERO</div><div class="col-8" id="infoGenero">...</div></div>
+                    <div class="row info-row"><div class="col-4 info-label">DIRECTOR</div><div class="col-8" id="infoDirector">...</div></div>
+                    <div class="row info-row"><div class="col-4 info-label">ACTORES</div><div class="col-8" id="infoActores">...</div></div>
+                    <div class="row info-row"><div class="col-4 info-label">PAÍS</div><div class="col-8" id="infoPais">...</div></div>
+                    <div class="row info-row"><div class="col-4 info-label">DURACIÓN</div><div class="col-8" id="infoDuracion">...</div></div>
+                    <div class="row info-row border-bottom-0"><div class="col-4 info-label">DISTRIBUIDOR</div><div class="col-8" id="infoDist">...</div></div>
+                </div>
+                <h6 class="fw-bold mb-3 text-danger text-uppercase mt-4" id="tituloEstreno">Estreno</h6>
+                <div class="d-flex w-100 mb-4" id="offcanvasTabs"></div>
+                <h6 class="fw-bold mb-3 mt-4">Español Tradicional <span class="text-muted fw-normal fs-6 ms-2" id="offcanvasSalaBadge">Sala 1</span></h6>
+                <div class="d-flex flex-wrap" id="offcanvasTimes"></div>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer-cinemex mt-5 py-5">
         <div class="container">
             <div class="row">
-                
                 <div class="col-md-4 px-md-4 text-center text-md-start mb-4 mb-md-0">
                     <p class="mb-1 fs-5">Atención telefónica</p>
                     <h1 class="fw-bold text-white mb-4">55 5257-6969</h1>
@@ -110,70 +158,43 @@
                         <a href="https://www.youtube.com/user/CinemexOficial" target="_blank" class="social-circle"><i class="bi bi-youtube"></i></a>
                     </div>
                 </div>
-
                 <div class="col-md-4 px-md-5 mb-4 mb-md-0">
                     <div class="row">
                         <div class="col-12">
-                            <a href="#" class="footer-link">Sobre Cinemex</a>
-                            <a href="#" class="footer-link">Factura Electrónica</a>
-                            <a href="#" class="footer-link">Ventas Corporativas</a>
-                            <a href="#" class="footer-link">Términos y Condiciones Productos Cinemex</a>
-                            <a href="#" class="footer-link">Política de precios</a>
-                            <a href="#" class="footer-link">Política de reembolsos</a>
-                            <a href="#" class="footer-link">Atracción de Talento</a>
-                            <a href="#" class="footer-link">Términos y condiciones</a>
-                            <a href="#" class="footer-link">Aviso de Privacidad</a>
+                            <a href="#" class="footer-link">Sobre Cinemex</a><a href="#" class="footer-link">Factura Electrónica</a><a href="#" class="footer-link">Ventas Corporativas</a><a asp-controller="Home" asp-action="Terminos" class="footer-link">Términos y Condiciones Productos Cinemex</a><a href="#" class="footer-link">Política de precios</a><a href="#" class="footer-link">Política de reembolsos</a><a href="#" class="footer-link">Atracción de Talento</a><a href="#" class="footer-link">Términos y condiciones</a><a href="#" class="footer-link">Aviso de Privacidad</a>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-4 px-md-4 d-flex flex-column justify-content-between">
                     <div class="d-flex gap-3 justify-content-center justify-content-md-start mb-4">
-                        <a href="https://apps.apple.com/mx/app/cinemex/id418163740" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" height="40" alt="App Store">
-                        </a>
-                        <a href="https://play.google.com/store/apps/details?id=com.cinemex&hl=es_MX" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" height="40" alt="Google Play">
-                        </a>
+                        <a href="https://apps.apple.com/mx/app/cinemex/id418163740" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" height="40" alt="App Store"></a><a href="https://play.google.com/store/apps/details?id=com.cinemex&hl=es_MX" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" height="40" alt="Google Play"></a>
                     </div>
-                    
                     <div class="d-flex gap-4 justify-content-center justify-content-md-start align-items-center opacity-75 mt-auto border-top border-secondary pt-3 flex-wrap">
-                        <span class="small fw-bold">canacine</span>
-                        <span class="small fw-bold">alboa.</span>
-                        <span class="small fw-bold">ARENA</span>
-                        <div class="text-center">
-                            <span class="small bg-primary text-white px-2 py-1 rounded d-block mb-1"><i>PayPal</i></span>
-                            <span style="font-size: 0.6rem;">Cómo funciona PayPal</span>
-                        </div>
+                        <span class="small fw-bold">canacine</span><span class="small fw-bold">alboa.</span><span class="small fw-bold">ARENA</span>
+                        <div class="text-center"><span class="small bg-primary text-white px-2 py-1 rounded d-block mb-1"><i>PayPal</i></span><span style="font-size: 0.6rem;">Cómo funciona PayPal</span></div>
                     </div>
                 </div>
-
             </div>
-
             <div class="row mt-5">
                 <div class="col-12 text-end">
-                    <p class="copyright-text mb-0">
-                        Derechos reservados &copy; Cadena Mexicana de exhibición S.A de CV2013. Sitio desarrollado no oficial
-                    </p>
+                    <p class="copyright-text mb-0">Derechos reservados &copy; Cadena Mexicana de exhibición S.A de CV2013. Sitio desarrollado no oficial</p>
                 </div>
             </div>
         </div>
     </footer>
-
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     
     <script>
+        window.currentData = {};
+
         document.addEventListener("DOMContentLoaded", () => {
             const navText = document.getElementById('navCineSeleccionado');
             const options = document.querySelectorAll('.nav-cine-option');
-            
-            const savedCine = localStorage.getItem('cinePreferido');
-            if(savedCine) {
-                navText.innerText = savedCine;
-            }
-
+            const savedCine = localStorage.getItem('cinePreferido') || 'Mol Concordia';
+            navText.innerText = savedCine;
             options.forEach(item => {
                 item.addEventListener('click', event => {
                     event.preventDefault();
@@ -182,7 +203,90 @@
                     localStorage.setItem('cinePreferido', cineName);
                 });
             });
+
+            const offcanvasEl = document.getElementById('movieOffcanvas');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasEl);
+            
+            document.querySelectorAll('.btn-abrir-panel').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.currentData = {
+                        pelicula: this.getAttribute('data-pelicula'),
+                        trailer: this.getAttribute('data-trailer'),
+                        poster: this.getAttribute('data-poster'),
+                        sala: this.getAttribute('data-sala'),
+                        fechas: this.getAttribute('data-fechas').split(','),
+                        horarios: this.getAttribute('data-horarios').split(','),
+                        esPreventa: this.getAttribute('data-preventa') === "true"
+                    };
+
+                    const cineActual = localStorage.getItem('cinePreferido') || 'Mol Concordia';
+
+                    document.getElementById('infoOriginal').innerText = this.getAttribute('data-original');
+                    const clasif = this.getAttribute('data-clasif');
+                    document.getElementById('infoClasifBadge').innerText = clasif;
+                    document.getElementById('infoClasifText').innerText = clasif;
+                    document.getElementById('infoGenero').innerText = this.getAttribute('data-genero');
+                    document.getElementById('infoDirector').innerText = this.getAttribute('data-director');
+                    document.getElementById('infoActores').innerText = this.getAttribute('data-actores');
+                    document.getElementById('infoPais').innerText = this.getAttribute('data-pais');
+                    document.getElementById('infoDuracion').innerText = this.getAttribute('data-duracion');
+                    document.getElementById('infoDist').innerText = this.getAttribute('data-dist');
+                    
+                    document.getElementById('offcanvasMovieName').innerText = window.currentData.pelicula;
+                    document.getElementById('offcanvasHeaderCine').innerText = 'Cinemex ' + cineActual;
+                    document.getElementById('offcanvasSalaBadge').innerText = window.currentData.sala;
+                    document.getElementById('offcanvasTrailer').src = window.currentData.trailer + "?autoplay=1&mute=1"; 
+                    document.getElementById('tituloEstreno').innerText = window.currentData.esPreventa ? "PREVENTA" : "ESTRENO";
+
+                    let tabsHtml = '';
+                    window.currentData.fechas.forEach((f, index) => { 
+                        tabsHtml += `<button class="tab-btn text-center ${index===0?'active':''}" onclick="cambiarPestana(this, '${f}')">${f}</button>`; 
+                    });
+                    document.getElementById('offcanvasTabs').innerHTML = tabsHtml;
+
+                    renderHorarios(window.currentData.fechas[0]);
+                    offcanvasInstance.show();
+                });
+            });
+
+            offcanvasEl.addEventListener('hidden.bs.offcanvas', function () { document.getElementById('offcanvasTrailer').src = ""; });
+            const searchModal = document.getElementById('searchModal');
+            const searchInput = searchModal.querySelector('input[name="buscar"]');
+            searchModal.addEventListener('shown.bs.modal', function () { searchInput.focus(); });
         });
+
+        function cambiarPestana(btn, fecha) { 
+            document.querySelectorAll('#offcanvasTabs .tab-btn').forEach(t => t.classList.remove('active')); 
+            btn.classList.add('active'); 
+            renderHorarios(fecha);
+        }
+
+        function renderHorarios(fechaSeleccionada) {
+            let timesHtml = '';
+            let now = new Date();
+            let currentHour = now.getHours();
+            let currentMinute = now.getMinutes();
+            let thresholdMinutes = (currentHour * 60) + currentMinute - 30;
+            const cineActual = localStorage.getItem('cinePreferido') || 'Mol Concordia';
+
+            window.currentData.horarios.forEach(h => {
+                let showTime = true;
+                if(fechaSeleccionada === 'HOY') {
+                    let parts = h.split(':');
+                    let hMins = (parseInt(parts[0]) * 60) + parseInt(parts[1]);
+                    if(hMins < thresholdMinutes) { showTime = false; }
+                }
+                
+                if(showTime) {
+                    const url = `/Home/Asientos?pelicula=${encodeURIComponent(window.currentData.pelicula)}&poster=${encodeURIComponent(window.currentData.poster)}&fecha=${encodeURIComponent(fechaSeleccionada)}&sala=${encodeURIComponent(window.currentData.sala)}&horario=${h}&cine=${encodeURIComponent(cineActual)}`;
+                    timesHtml += `<a href="${url}" class="time-btn-green mb-3">${h}</a>`;
+                }
+            });
+
+            if(timesHtml === '') { timesHtml = '<p class="text-muted small w-100">Ya no hay funciones disponibles para este día.</p>'; }
+            document.getElementById('offcanvasTimes').innerHTML = timesHtml;
+        }
     </script>
     
     @await RenderSectionAsync("Scripts", required: false)
