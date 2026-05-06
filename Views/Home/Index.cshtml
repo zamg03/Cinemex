@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Inicio";
 
+    // SIMULACIÓN DE BASE DE DATOS (Lista de Diccionarios)
+    // Cada diccionario representa una película con toda su ficha técnica, horarios y URL de trailers.
     var peliculas = new List<Dictionary<string, string>> {
         new Dictionary<string, string> { { "Titulo", "Super Mario Galaxy: La Película" }, { "Poster", "/images/posters/mario.jpg" }, { "Sala", "Sala 1" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "13:00,16:00,19:00,22:00" }, { "Trailer", "https://www.youtube.com/embed/ipzEY7c7it8" }, { "EsPreventa", "false" }, { "Original", "Super Mario Galaxy: The Movie" }, { "Clasificacion", "AA" }, { "Genero", "Animación, Aventura" }, { "Director", "Aaron Horvath, Michael Jelenic" }, { "Actores", "Chris Pratt, Jack Black, Anya Taylor-Joy" }, { "Pais", "Estados Unidos, Japón" }, { "Duracion", "1h 45m" }, { "Distribuidor", "Universal Pictures" } },
         new Dictionary<string, string> { { "Titulo", "La Posesión De La Momia" }, { "Poster", "/images/posters/momia.jpg" }, { "Sala", "Sala 2" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "13:30,16:30,19:30,22:30" }, { "Trailer", "https://www.youtube.com/embed/az6bdokjRk8" }, { "EsPreventa", "false" }, { "Original", "The Mummy's Possession" }, { "Clasificacion", "B15" }, { "Genero", "Terror, Suspenso" }, { "Director", "James Wan" }, { "Actores", "Patrick Wilson, Vera Farmiga, Sofia Boutella" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 55m" }, { "Distribuidor", "Warner Bros. Pictures" } },
@@ -8,18 +10,18 @@
         new Dictionary<string, string> { { "Titulo", "El Drama" }, { "Poster", "/images/posters/drama.jpg" }, { "Sala", "Sala 4" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "14:30,17:30,20:30" }, { "Trailer", "https://www.youtube.com/embed/pn8-dhxHVX8" }, { "EsPreventa", "false" }, { "Original", "The Drama" }, { "Clasificacion", "B" }, { "Genero", "Drama" }, { "Director", "Noah Baumbach" }, { "Actores", "Adam Driver, Scarlett Johansson" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 00m" }, { "Distribuidor", "Cinépolis Distribución" } },
         new Dictionary<string, string> { { "Titulo", "Instinto implacable" }, { "Poster", "/images/posters/instinto.jpg" }, { "Sala", "Sala 5" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "15:00,18:00,21:00" }, { "Trailer", "https://www.youtube.com/embed/ryDs5vuGCvs" }, { "EsPreventa", "false" }, { "Original", "Relentless Instinct" }, { "Clasificacion", "C" }, { "Genero", "Acción, Thriller" }, { "Director", "Chad Stahelski" }, { "Actores", "Keanu Reeves, Charlize Theron" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 15m" }, { "Distribuidor", "Lionsgate" } },
         new Dictionary<string, string> { { "Titulo", "Bulevar" }, { "Poster", "/images/posters/bulevar.jpg" }, { "Sala", "Sala 6" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "15:30,18:30,21:30" }, { "Trailer", "https://www.youtube.com/embed/rZ6xn57p4J0" }, { "EsPreventa", "false" }, { "Original", "Boulevard" }, { "Clasificacion", "B" }, { "Genero", "Romance, Drama" }, { "Director", "Damien Chazelle" }, { "Actores", "Ryan Gosling, Emma Stone" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 50m" }, { "Distribuidor", "Paramount Pictures" } },
-        
-        // MICHAEL AHORA ES CARTELERA GENERAL (EsPreventa = false, Fechas inician HOY)
         new Dictionary<string, string> { { "Titulo", "Michael: La Historia De Michael Jackson" }, { "Poster", "/images/posters/michael.jpg" }, { "Sala", "Sala 7" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "14:00,17:00,20:00" }, { "Trailer", "https://www.youtube.com/embed/7wWEvqjsvxE" }, { "EsPreventa", "false" }, { "Original", "Michael" }, { "Clasificacion", "A" }, { "Genero", "Biografía, Musical" }, { "Director", "Antoine Fuqua" }, { "Actores", "Jaafar Jackson, Colman Domingo, Miles Teller" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 5m" }, { "Distribuidor", "Universal Pictures" } },
-        
         new Dictionary<string, string> { { "Titulo", "El Diablo Viste A La Moda 2" }, { "Poster", "/images/posters/diablo.jpg" }, { "Sala", "Sala 8" }, { "Fechas", "29 DE ABR.,30 DE ABR.,01 DE MAY." }, { "Horarios", "14:30,17:30,20:30" }, { "Trailer", "https://www.youtube.com/embed/aXdjJbVrJeg" }, { "EsPreventa", "true" }, { "Original", "The Devil Wears Prada 2" }, { "Clasificacion", "B" }, { "Genero", "Comedia, Drama" }, { "Director", "David Frankel" }, { "Actores", "Meryl Streep, Anne Hathaway, Emily Blunt" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 58m" }, { "Distribuidor", "20th Century Studios" } },
         new Dictionary<string, string> { { "Titulo", "Billie Eilish - Hit Me Hard and Soft: El Tour en 3D" }, { "Poster", "/images/posters/billie.jpg" }, { "Sala", "Sala 9" }, { "Fechas", "07 DE MAY.,08 DE MAY.,09 DE MAY." }, { "Horarios", "15:00,18:00,21:00" }, { "Trailer", "https://www.youtube.com/embed/3pcP1wwdxfo" }, { "EsPreventa", "true" }, { "Original", "Billie Eilish - Hit Me Hard and Soft Tour 3D" }, { "Clasificacion", "A" }, { "Genero", "Documental, Musical" }, { "Director", "Sam Wrench" }, { "Actores", "Billie Eilish, Finneas O'Connell" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 20m" }, { "Distribuidor", "Trafalgar Releasing" } }
     };
+
+    // FILTROS LINQ: Separamos el diccionario gigante en dos listas más pequeñas según la etiqueta "EsPreventa"
     var carteleraNormal = peliculas.Where(p => p["EsPreventa"] == "false").ToList();
     var preventas = peliculas.Where(p => p["EsPreventa"] == "true").ToList();
 }
 
 <style>
+    /* Diseño responsivo para mantener el video de fondo adaptado a toda la pantalla (Hero Banner) */
     .video-background-hero { position: relative; width: 100%; height: 75vh; min-height: 550px; overflow: hidden; background-color: #000; }
     .video-background-hero iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; min-width: 177.77vh; min-height: 56.25vw; transform: translate(-50%, -50%); pointer-events: none; }
     .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.3) 100%); z-index: 1; }
@@ -70,6 +72,7 @@
             </div>
         }
     </div>
+
     <h2 class="cine-title mb-4 border-bottom border-secondary pb-2 text-uppercase">Preventas <i class="bi bi-ticket-perforated text-danger"></i></h2>
     <div class="row g-4 mb-5">
         @foreach(var p in preventas) {

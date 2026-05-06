@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinemex.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260419213532_AgregandoPelicula")]
-    partial class AgregandoPelicula
+    [Migration("20260506040547_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,19 @@ namespace Cinemex.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Fecha")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Horario")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Pelicula")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Sala")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -56,11 +64,31 @@ namespace Cinemex.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ApellidoMaterno")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ApellidoPaterno")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FechaNacimiento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

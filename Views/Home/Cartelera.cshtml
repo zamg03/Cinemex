@@ -1,8 +1,12 @@
 ﻿@{
+    // Define el título dinámicamente: Si viene de la pestaña "Preventas", dice "Preventas", sino "Cartelera".
     ViewData["Title"] = ViewBag.SoloPreventas ? "Preventas" : "Cartelera";
+    
+    // Variables enviadas desde el HomeController
     bool soloPreventas = ViewBag.SoloPreventas;
     string busqueda = ViewBag.Busqueda as string;
 
+    // Repetimos el arreglo maestro de películas
     var peliculas = new List<Dictionary<string, string>> {
         new Dictionary<string, string> { { "Titulo", "Super Mario Galaxy: La Película" }, { "Poster", "/images/posters/mario.jpg" }, { "Sala", "Sala 1" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "13:00,16:00,19:00,22:00" }, { "Trailer", "https://www.youtube.com/embed/ipzEY7c7it8" }, { "EsPreventa", "false" }, { "Original", "Super Mario Galaxy: The Movie" }, { "Clasificacion", "AA" }, { "Genero", "Animación, Aventura" }, { "Director", "Aaron Horvath, Michael Jelenic" }, { "Actores", "Chris Pratt, Jack Black, Anya Taylor-Joy" }, { "Pais", "Estados Unidos, Japón" }, { "Duracion", "1h 45m" }, { "Distribuidor", "Universal Pictures" } },
         new Dictionary<string, string> { { "Titulo", "La Posesión De La Momia" }, { "Poster", "/images/posters/momia.jpg" }, { "Sala", "Sala 2" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "13:30,16:30,19:30,22:30" }, { "Trailer", "https://www.youtube.com/embed/az6bdokjRk8" }, { "EsPreventa", "false" }, { "Original", "The Mummy's Possession" }, { "Clasificacion", "B15" }, { "Genero", "Terror, Suspenso" }, { "Director", "James Wan" }, { "Actores", "Patrick Wilson, Vera Farmiga, Sofia Boutella" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 55m" }, { "Distribuidor", "Warner Bros. Pictures" } },
@@ -10,19 +14,23 @@
         new Dictionary<string, string> { { "Titulo", "El Drama" }, { "Poster", "/images/posters/drama.jpg" }, { "Sala", "Sala 4" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "14:30,17:30,20:30" }, { "Trailer", "https://www.youtube.com/embed/pn8-dhxHVX8" }, { "EsPreventa", "false" }, { "Original", "The Drama" }, { "Clasificacion", "B" }, { "Genero", "Drama" }, { "Director", "Noah Baumbach" }, { "Actores", "Adam Driver, Scarlett Johansson" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 00m" }, { "Distribuidor", "Cinépolis Distribución" } },
         new Dictionary<string, string> { { "Titulo", "Instinto implacable" }, { "Poster", "/images/posters/instinto.jpg" }, { "Sala", "Sala 5" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "15:00,18:00,21:00" }, { "Trailer", "https://www.youtube.com/embed/ryDs5vuGCvs" }, { "EsPreventa", "false" }, { "Original", "Relentless Instinct" }, { "Clasificacion", "C" }, { "Genero", "Acción, Thriller" }, { "Director", "Chad Stahelski" }, { "Actores", "Keanu Reeves, Charlize Theron" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 15m" }, { "Distribuidor", "Lionsgate" } },
         new Dictionary<string, string> { { "Titulo", "Bulevar" }, { "Poster", "/images/posters/bulevar.jpg" }, { "Sala", "Sala 6" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "15:30,18:30,21:30" }, { "Trailer", "https://www.youtube.com/embed/rZ6xn57p4J0" }, { "EsPreventa", "false" }, { "Original", "Boulevard" }, { "Clasificacion", "B" }, { "Genero", "Romance, Drama" }, { "Director", "Damien Chazelle" }, { "Actores", "Ryan Gosling, Emma Stone" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 50m" }, { "Distribuidor", "Paramount Pictures" } },
-        
-        // MICHAEL TAMBIÉN ACTUALIZADO AQUÍ
         new Dictionary<string, string> { { "Titulo", "Michael: La Historia De Michael Jackson" }, { "Poster", "/images/posters/michael.jpg" }, { "Sala", "Sala 7" }, { "Fechas", "HOY,MAÑANA,24 DE ABR." }, { "Horarios", "14:00,17:00,20:00" }, { "Trailer", "https://www.youtube.com/embed/7wWEvqjsvxE" }, { "EsPreventa", "false" }, { "Original", "Michael" }, { "Clasificacion", "A" }, { "Genero", "Biografía, Musical" }, { "Director", "Antoine Fuqua" }, { "Actores", "Jaafar Jackson, Colman Domingo, Miles Teller" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 5m" }, { "Distribuidor", "Universal Pictures" } },
-        
         new Dictionary<string, string> { { "Titulo", "El Diablo Viste A La Moda 2" }, { "Poster", "/images/posters/diablo.jpg" }, { "Sala", "Sala 8" }, { "Fechas", "29 DE ABR.,30 DE ABR.,01 DE MAY." }, { "Horarios", "14:30,17:30,20:30" }, { "Trailer", "https://www.youtube.com/embed/aXdjJbVrJeg" }, { "EsPreventa", "true" }, { "Original", "The Devil Wears Prada 2" }, { "Clasificacion", "B" }, { "Genero", "Comedia, Drama" }, { "Director", "David Frankel" }, { "Actores", "Meryl Streep, Anne Hathaway, Emily Blunt" }, { "Pais", "Estados Unidos" }, { "Duracion", "1h 58m" }, { "Distribuidor", "20th Century Studios" } },
         new Dictionary<string, string> { { "Titulo", "Billie Eilish - Hit Me Hard and Soft: El Tour en 3D" }, { "Poster", "/images/posters/billie.jpg" }, { "Sala", "Sala 9" }, { "Fechas", "07 DE MAY.,08 DE MAY.,09 DE MAY." }, { "Horarios", "15:00,18:00,21:00" }, { "Trailer", "https://www.youtube.com/embed/3pcP1wwdxfo" }, { "EsPreventa", "true" }, { "Original", "Billie Eilish - Hit Me Hard and Soft Tour 3D" }, { "Clasificacion", "A" }, { "Genero", "Documental, Musical" }, { "Director", "Sam Wrench" }, { "Actores", "Billie Eilish, Finneas O'Connell" }, { "Pais", "Estados Unidos" }, { "Duracion", "2h 20m" }, { "Distribuidor", "Trafalgar Releasing" } }
     };
+
+    // MOTOR DE BÚSQUEDA Y FILTRADO
+    // Primero, verificamos si hay que aislar solo las Preventas
     var peliculasMostradas = soloPreventas ? peliculas.Where(p => p["EsPreventa"] == "true").ToList() : peliculas;
+    
+    // Segundo, si el usuario escribió algo en el modal de búsqueda, filtramos convirtiendo a minúsculas
+    // para que coincida aunque escriba "mario" o "MARIO"
     if (!string.IsNullOrEmpty(busqueda)) {
         peliculasMostradas = peliculasMostradas.Where(p => p["Titulo"].ToLower().Contains(busqueda.ToLower())).ToList();
     }
 }
 <style>
+    /* Estilos estéticos de las tarjetas */
     .cine-title { font-family: 'Impact', sans-serif; letter-spacing: 1px; font-size: 2.2rem; }
     .movie-card { border: none; background-color: transparent; transition: transform 0.3s; }
     .movie-card:hover { transform: translateY(-5px); }
@@ -32,23 +40,29 @@
     .btn-outline-dark { background-color: transparent; color: #333; border: 1px solid #333; transition: 0.3s; }
     .btn-outline-dark:hover { background-color: #eee; color: #333; }
 </style>
+
 <div class="container py-5 mt-4" style="min-height: 70vh;">
+    
     @if (!string.IsNullOrEmpty(busqueda)) {
         <p class="text-muted mb-1">Resultados de búsqueda para:</p>
         <h2 class="cine-title mb-5 border-bottom border-secondary pb-2 text-dark">"@busqueda" <i class="bi bi-search ms-2 text-danger"></i></h2>
+        
         if(peliculasMostradas.Count == 0) {
             <div class="text-center py-5"><i class="bi bi-emoji-frown fs-1 text-muted mb-3"></i><h4 class="text-muted">No encontramos películas con ese nombre.</h4></div>
         }
     } else {
         <h2 class="cine-title mb-5 border-bottom border-secondary pb-2 text-dark text-uppercase">@(soloPreventas ? "PREVENTAS" : "TODA LA CARTELERA") <i class="bi bi-film ms-2 text-danger"></i></h2>
     }
+
     <div class="row g-4">
         @foreach(var p in peliculasMostradas) {
             <div class="col-md-2 col-6">
                 <div class="movie-card text-center">
                     <img src="@p["Poster"]" class="movie-poster btn-abrir-panel" 
                          data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">
+                    
                     <h6 class="text-dark text-truncate mb-3 fw-bold" title="@p["Titulo"]">@p["Titulo"]</h6>
+                    
                     @if(p["EsPreventa"] == "true") {
                         <button class="btn btn-outline-dark w-100 rounded-0 py-1 btn-abrir-panel" 
                                 data-pelicula="@p["Titulo"]" data-poster="@p["Poster"]" data-sala="@p["Sala"]" data-fechas="@p["Fechas"]" data-horarios="@p["Horarios"]" data-trailer="@p["Trailer"]" data-preventa="@p["EsPreventa"]" data-original="@p["Original"]" data-clasif="@p["Clasificacion"]" data-genero="@p["Genero"]" data-director="@p["Director"]" data-actores="@p["Actores"]" data-pais="@p["Pais"]" data-duracion="@p["Duracion"]" data-dist="@p["Distribuidor"]">Preventa</button>
